@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RapidDrive VCR Manager â€” Documentation</title>
+<title>RapidDrive VCR Manager — Documentation</title>
 <style>
   :root {
     --bg: #16181c; --panel: #1e2126; --panel2: #23272d; --border: #33383f;
@@ -73,15 +73,15 @@
 <main>
 
 <div class="crumb">RapidDrive / VCR Manager / Documentation</div>
-<h1 id="overview">RapidDrive â€” VCR Manager</h1>
-<p><strong>VCR Manager</strong> is a 3ds&nbsp;Max tool for rendering vehicles in many variants without ever configuring the scene by hand. You describe each deliverable once â€” as a <em>Render Pass</em> â€” and the tool takes care of switching the scene into the right shape for it: which layers are visible, which materials each zone wears, how the lights behave, what the camera, frame range and resolution are, and where the frames go. Then you render locally or submit the whole set to Deadline or Chaos&nbsp;Cloud in one click.</p>
-<p>It is built around five kinds of reusable building blocks â€” <a href="#states">Layer States</a>, <a href="#zones">Material Zones</a>, <a href="#lights">Light Rules</a>, <a href="#props">Object Properties</a> and <a href="#anim">Animation Sets</a> â€” which passes combine like ingredients. Change an ingredient once and every pass that uses it updates.</p>
+<h1 id="overview">RapidDrive — VCR Manager</h1>
+<p><strong>VCR Manager</strong> is a 3ds&nbsp;Max tool for rendering vehicles in many variants without ever configuring the scene by hand. You describe each deliverable once — as a <em>Render Pass</em> — and the tool takes care of switching the scene into the right shape for it: which layers are visible, which materials each zone wears, how the lights behave, what the camera, frame range and resolution are, and where the frames go. Then you render locally or submit the whole set to Deadline or Chaos&nbsp;Cloud in one click.</p>
+<p>It is built around five kinds of reusable building blocks — <a href="#states">Layer States</a>, <a href="#zones">Material Zones</a>, <a href="#lights">Light Rules</a>, <a href="#props">Object Properties</a> and <a href="#anim">Animation Sets</a> — which passes combine like ingredients. Change an ingredient once and every pass that uses it updates.</p>
 
 <h2 id="getting-started">Getting Started</h2>
 <h3>Requirements</h3>
 <ul>
   <li>3ds Max (tested on 2023) with MAXScript</li>
-  <li><code>ObjectListView.dll</code> (bundled in <code>libs/</code> â€” loaded automatically)</li>
+  <li><code>ObjectListView.dll</code> (bundled in <code>libs/</code> — loaded automatically)</li>
 </ul>
 <h3>Running the tool</h3>
 <ul>
@@ -91,13 +91,13 @@
 <div class="tip">The window can be docked to either edge of Max via <strong>File &gt; Dock RapidDrive Left/Right</strong>, or floated. It remembers pass selection and expansion between sessions of the same scene.</div>
 
 <h2 id="main-window">The Main Window</h2>
-<figure><a href="images/main_closed.png" target="_blank"><img src="images/main_closed.png" alt="Main window, compact"></a><figcaption>Compact mode â€” just the Render Passes column. The side panel opens on demand and the window widens.</figcaption></figure>
+<figure><a href="images/main_closed.png" target="_blank"><img src="images/main_closed.png" alt="Main window, compact"></a><figcaption>Compact mode — just the Render Passes column. The side panel opens on demand and the window widens.</figcaption></figure>
 <figure><a href="images/main_states.png" target="_blank"><img src="images/main_states.png" alt="Main window with the Layer States panel open"></a><figcaption>Full layout: Render Passes on the left, a side tool (here Layer States) on the right. Click any screenshot to open it at full size.</figcaption></figure>
 <p>Each column reads top-to-bottom the same way:</p>
 <ol>
-  <li><strong>Search bar</strong> â€” filters the list below as you type. Left filters passes, right filters whatever tool is open.</li>
-  <li><strong>Tabs</strong> â€” on the left, <em>All / Exterior / Interior</em> filter passes by type (with live counts). On the right, tabs switch between the five side tools. The blue accent marks the active tab. Clicking the active side tab closes the panel.</li>
-  <li><strong>The list</strong> â€” with slim dark scrollbars; drag the thumb, click the track to page, or use the mouse wheel.</li>
+  <li><strong>Search bar</strong> — filters the list below as you type. Left filters passes, right filters whatever tool is open.</li>
+  <li><strong>Tabs</strong> — on the left, <em>All / Exterior / Interior</em> filter passes by type (with live counts). On the right, tabs switch between the five side tools. The blue accent marks the active tab. Clicking the active side tab closes the panel.</li>
+  <li><strong>The list</strong> — with slim dark scrollbars; drag the thumb, click the track to page, or use the mouse wheel.</li>
 </ol>
 <h3>Menu bar</h3>
 <table>
@@ -113,8 +113,8 @@
 <figure><a href="images/main_exterior.png" target="_blank"><img src="images/main_exterior.png" alt="Type tabs filtering"></a><figcaption>The Exterior tab filtering the pass list. Counts update live; the search box combines with the tab filter.</figcaption></figure>
 <h3>Hierarchy</h3>
 <ul>
-  <li><strong>Base Pass</strong> â€” a root-level pass with its own state assignment. Typed <em>exterior</em> or <em>interior</em>.</li>
-  <li><strong>Package Pass</strong> â€” a child of a Base Pass that layers include/exclude overrides on top (option packs, trims, markets).</li>
+  <li><strong>Base Pass</strong> — a root-level pass with its own state assignment. Typed <em>exterior</em> or <em>interior</em>.</li>
+  <li><strong>Package Pass</strong> — a child of a Base Pass that layers include/exclude overrides on top (option packs, trims, markets).</li>
 </ul>
 <h3>Creating and editing</h3>
 <ul>
@@ -127,15 +127,15 @@
 <table>
 <tr><th>Format</th><th>Example</th><th>Result</th></tr>
 <tr><td>Single frame</td><td><code>10</code></td><td>Frame 10</td></tr>
-<tr><td>Range</td><td><code>1-100</code></td><td>Frames 1â€“100</td></tr>
-<tr><td>Every Nth</td><td><code>1-100:5</code></td><td>1, 6, 11 â€¦ 96</td></tr>
+<tr><td>Range</td><td><code>1-100</code></td><td>Frames 1–100</td></tr>
+<tr><td>Every Nth</td><td><code>1-100:5</code></td><td>1, 6, 11 … 96</td></tr>
 <tr><td>List</td><td><code>1,5,10,20</code></td><td>Those frames</td></tr>
 <tr><td>Mixed</td><td><code>1-10,20,30-50</code></td><td>Any combination</td></tr>
 </table>
-<div class="tip">Passes can be <strong>hidden</strong> (right-click) to declutter the list without deleting them, and <strong>disabled</strong> to keep them out of submissions. A pass whose Type doesn't match the active type tab is never lost â€” Submit All always works from the full pass set, and saving a pass the current tab would hide switches you back to All automatically.</div>
+<div class="tip">Passes can be <strong>hidden</strong> (right-click) to declutter the list without deleting them, and <strong>disabled</strong> to keep them out of submissions. A pass whose Type doesn't match the active type tab is never lost — Submit All always works from the full pass set, and saving a pass the current tab would hide switches you back to All automatically.</div>
 
 <h2 id="states">Layer States</h2>
-<p>A Layer State is a named snapshot of layer visibility â€” which layers are on. States can also carry <em>zone entries</em>: per-state material assignments for <a href="#zones">Material Zones</a>. Applying a state therefore switches both the visible geometry and the variant materials in one step.</p>
+<p>A Layer State is a named snapshot of layer visibility — which layers are on. States can also carry <em>zone entries</em>: per-state material assignments for <a href="#zones">Material Zones</a>. Applying a state therefore switches both the visible geometry and the variant materials in one step.</p>
 <h3>Creating and managing</h3>
 <ul>
   <li>Right-click &gt; <strong>Create New State</strong>, name it, tick the layers that belong to it.</li>
@@ -143,12 +143,12 @@
   <li>Right-click for Rename / Clone (zones and materials included) / Remove, and for <strong>Viewport / Selection</strong> submenus that replace, add or remove layers from the state based on what is visible or selected.</li>
   <li><kbd>Insert</kbd> creates a state, <kbd>Delete</kbd> removes the selected ones.</li>
 </ul>
-<figure><a href="images/dlg_editlayers.png" target="_blank"><img src="images/dlg_editlayers.png" alt="Edit State Layers dialog"></a><figcaption>Edit State Layers. While searching, layers you have already selected stay pinned and visible â€” filtering can never silently drop them.</figcaption></figure>
+<figure><a href="images/dlg_editlayers.png" target="_blank"><img src="images/dlg_editlayers.png" alt="Edit State Layers dialog"></a><figcaption>Edit State Layers. While searching, layers you have already selected stay pinned and visible — filtering can never silently drop them.</figcaption></figure>
 <h3>Zone entries</h3>
 <p>Zone child rows under a state show its material assignments. Click a zone row's <strong>Material</strong> cell to pick from a dropdown of the material library and scene, or right-click for Pick / Copy / Paste / Clear. <strong>Scan Scene for Zones</strong> populates entries automatically from the scene.</p>
 
 <h2 id="zones">Material Zones</h2>
-<p>Material Zones group objects whose material changes together â€” all painted body panels, all glass, all brightwork. States assign materials <em>per zone</em>, so a new colourway is just a new state with different zone materials.</p>
+<p>Material Zones group objects whose material changes together — all painted body panels, all glass, all brightwork. States assign materials <em>per zone</em>, so a new colourway is just a new state with different zone materials.</p>
 <figure><a href="images/main_zones.png" target="_blank"><img src="images/main_zones.png" alt="Material Zones panel"></a><figcaption>Zones with their member objects. The Material column shows each zone's current material at a glance ("(mixed)" when members differ).</figcaption></figure>
 <h3>Creating and managing</h3>
 <ul>
@@ -158,16 +158,16 @@
   <li>Zones appear dimmed when none of their objects are on layers visible in the current state.</li>
 </ul>
 <h3>Assigning a material directly <span class="pill">New</span></h3>
-<figure><a href="images/zone_combo.png" target="_blank"><img src="images/zone_combo.png" alt="Zone material dropdown"></a><figcaption>Click a zone's Material cell and pick â€” the material is assigned to every member object in the scene.</figcaption></figure>
+<figure><a href="images/zone_combo.png" target="_blank"><img src="images/zone_combo.png" alt="Zone material dropdown"></a><figcaption>Click a zone's Material cell and pick — the material is assigned to every member object in the scene.</figcaption></figure>
 <ul>
   <li>Click the <strong>Material cell</strong> of a zone row and choose from the dropdown (library materials first, then scene).</li>
-  <li>The pick is applied to <em>all</em> member objects of the zone â€” including any hidden by a search filter â€” and is a single undoable action.</li>
-  <li>If the <strong>active state</strong> also assigns that zone, the tool offers to update the state's assignment to match â€” otherwise re-applying the state would put the old material back.</li>
+  <li>The pick is applied to <em>all</em> member objects of the zone — including any hidden by a search filter — and is a single undoable action.</li>
+  <li>If the <strong>active state</strong> also assigns that zone, the tool offers to update the state's assignment to match — otherwise re-applying the state would put the old material back.</li>
 </ul>
 
 <h2 id="lights">Light Rules</h2>
 <figure><a href="images/main_lights.png" target="_blank"><img src="images/main_lights.png" alt="Light Rules panel"></a><figcaption>Each light with its five targeting categories.</figcaption></figure>
-<p>Light Rules control which objects each light affects. Every light appears with five category children â€” <strong>Layers, Materials, Selection Sets, Layer States, Material Zones</strong> â€” and the tool resolves them into the light's include/exclude list.</p>
+<p>Light Rules control which objects each light affects. Every light appears with five category children — <strong>Layers, Materials, Selection Sets, Layer States, Material Zones</strong> — and the tool resolves them into the light's include/exclude list.</p>
 <ul>
   <li>Right-click a light to switch between <strong>Include</strong> (light only affects listed objects) and <strong>Exclude</strong> (light ignores them), and whether the rule affects <strong>Illumination</strong>, <strong>Shadow Casting</strong> or both.</li>
   <li>Right-click a category to <strong>Set</strong> (picker with filter and pre-selected current items) or <strong>Clear</strong> it.</li>
@@ -177,7 +177,7 @@
 <h2 id="props">Object Properties</h2>
 <figure><a href="images/main_props.png" target="_blank"><img src="images/main_props.png" alt="Object Properties panel"></a><figcaption>Named property sets, applied per pass.</figcaption></figure>
 <p>Object Property Sets override V-Ray and Max object properties (matte settings, visibility flags, GI, Object ID) for groups of objects, per render pass. Target objects by layers, materials, selection sets, states or zones; enable only the properties you want to override in <strong>Edit Properties</strong>.</p>
-<div class="warn">When several sets touch the same objects in one pass with different values, a conflict warning lists them â€” the last set in list order wins.</div>
+<div class="warn">When several sets touch the same objects in one pass with different values, a conflict warning lists them — the last set in list order wins.</div>
 
 <h2 id="anim">Animation Sets</h2>
 <figure><a href="images/main_anim.png" target="_blank"><img src="images/main_anim.png" alt="Animation Sets panel"></a><figcaption>Named animation sets with their target objects.</figcaption></figure>
@@ -185,19 +185,19 @@
 
 <h2 id="render">Rendering &amp; Submission</h2>
 <h3>Preview &amp; local rendering</h3>
-<p><strong>Render &gt; Preview</strong> applies and renders the selected pass in the viewport renderer. <strong>Render &gt; Local Machine</strong> renders selected passes in sequence â€” each pass configuration is applied, then rendered with its own time, size and camera.</p>
+<p><strong>Render &gt; Preview</strong> applies and renders the selected pass in the viewport renderer. <strong>Render &gt; Local Machine</strong> renders selected passes in sequence — each pass configuration is applied, then rendered with its own time, size and camera.</p>
 <h3>Deadline</h3>
-<figure><a href="images/dlg_deadline.png" target="_blank"><img src="images/dlg_deadline.png" alt="Deadline submit dialog"></a><figcaption>Deadline submission â€” output directory can be derived from the scene name automatically.</figcaption></figure>
+<figure><a href="images/dlg_deadline.png" target="_blank"><img src="images/dlg_deadline.png" alt="Deadline submit dialog"></a><figcaption>Deadline submission — output directory can be derived from the scene name automatically.</figcaption></figure>
 <ul>
-  <li><strong>Submit Selected</strong> sends the selected passes; <strong>Submit All</strong> sends every pass in the scene â€” regardless of any type tab or search filter active in the UI.</li>
+  <li><strong>Submit Selected</strong> sends the selected passes; <strong>Submit All</strong> sends every pass in the scene — regardless of any type tab or search filter active in the UI.</li>
   <li>Disabled passes and passes with missing states are skipped, with a summary of what was skipped.</li>
   <li>Each pass is submitted as its own job with a saved scene snapshot, so farm renders match exactly what the pass defines.</li>
 </ul>
 <h3>Chaos Cloud</h3>
-<p><strong>Render &gt; Submit to Chaos Cloudâ€¦</strong> exports .vrscene files per pass and hands them to the Chaos Cloud client. Configure the client path, output suffix and cache folder in the dialog.</p>
+<p><strong>Render &gt; Submit to Chaos Cloud…</strong> exports .vrscene files per pass and hands them to the Chaos Cloud client. Configure the client path, output suffix and cache folder in the dialog.</p>
 
 <h2 id="fbx">Build from FBX</h2>
-<p><strong>Passes &gt; Build from FBXâ€¦</strong> imports a SmartBuild FBX and generates the whole VCR setup automatically: layers from the hierarchy, then Layer States, Material Zones and Render Passes from the custom attributes carried by the FBX.</p>
+<p><strong>Passes &gt; Build from FBX…</strong> imports a SmartBuild FBX and generates the whole VCR setup automatically: layers from the hierarchy, then Layer States, Material Zones and Render Passes from the custom attributes carried by the FBX.</p>
 <table>
 <tr><th>Field</th><th>Required</th><th>Description</th></tr>
 <tr><td>Base Grades</td><td>Yes</td><td>FBX with base model variants (helpers with <code>.grades</code> attributes)</td></tr>
@@ -208,7 +208,7 @@
 <div class="warn">The build starts by resetting the current scene (with a confirmation prompt).</div>
 
 <h2 id="buildscene">Build from Scene</h2>
-<p><strong>Passes &gt; Build from Sceneâ€¦</strong> rebuilds States, Zones and Passes from custom attributes already present on scene objects â€” no FBX needed. Useful after manual scene surgery. Existing States and Passes are overwritten (confirmation first).</p>
+<p><strong>Passes &gt; Build from Scene…</strong> rebuilds States, Zones and Passes from custom attributes already present on scene objects — no FBX needed. Useful after manual scene surgery. Existing States and Passes are overwritten (confirmation first).</p>
 
 <h2 id="settings">Project Settings</h2>
 <table>
@@ -226,7 +226,7 @@
 <tr><td>Light rules</td><td>Custom attributes on lights</td></tr>
 <tr><td>External tool paths</td><td><code>(getDir #plugcfg)\Toyota_VCR_Manager.ini</code></td></tr>
 </table>
-<p class="note">Everything travels with the .max file â€” opening the scene on another machine brings the full VCR setup with it.</p>
+<p class="note">Everything travels with the .max file — opening the scene on another machine brings the full VCR setup with it.</p>
 
 <h2 id="tips">Tips &amp; Shortcuts</h2>
 <ul>
@@ -234,12 +234,12 @@
   <li><kbd>Insert</kbd> / <kbd>Delete</kbd> on the Layer States tab create/remove states.</li>
   <li>Clicking the <strong>active side tab</strong> closes the panel; the Passes menu does the same.</li>
   <li>Search boxes filter live and combine with the type tabs; while filtering a picker dialog, your existing selections stay pinned and safe.</li>
-  <li>The zone <strong>Material dropdown</strong> is the fastest way to try a colour across a whole zone â€” and it's one undo step.</li>
+  <li>The zone <strong>Material dropdown</strong> is the fastest way to try a colour across a whole zone — and it's one undo step.</li>
   <li>Hidden rows are included in searches, so you can always find a hidden pass by typing its name.</li>
 </ul>
 
 <footer>
-  RapidDrive â€” VCR Manager Â· Created by Ben Robins Â· Publicis Production<br>
+  RapidDrive — VCR Manager · Created by Ben Robins · Publicis Production<br>
   Documentation generated July 2026. Screenshots taken from a working scene &mdash; click any image to view it full size.
 </footer>
 </main>
