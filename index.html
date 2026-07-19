@@ -51,6 +51,7 @@
 <nav>
   <h4>Start Here</h4>
   <a href="#overview">What is VCR Manager?</a>
+  <a href="#how-it-works">How It Works</a>
   <a href="#getting-started">Getting Started</a>
   <a href="#main-window">The Main Window</a>
   <h4>Core Tools</h4>
@@ -77,6 +78,23 @@
 <p><strong>VCR Manager</strong> is a 3ds&nbsp;Max tool for rendering vehicles in many variants without ever configuring the scene by hand. You describe each deliverable once — as a <em>Render Pass</em> — and the tool takes care of switching the scene into the right shape for it: which layers are visible, which materials each zone wears, how the lights behave, what the camera, frame range and resolution are, and where the frames go. Then you render locally or submit the whole set to Deadline or Chaos&nbsp;Cloud in one click.</p>
 <p>It is built around five kinds of reusable building blocks — <a href="#states">Layer States</a>, <a href="#zones">Material Zones</a>, <a href="#lights">Light Rules</a>, <a href="#props">Object Properties</a> and <a href="#anim">Animation Sets</a> — which passes combine like ingredients. Change an ingredient once and every pass that uses it updates.</p>
 
+<h2 id="how-it-works">How It Works</h2>
+<p>Behind the scenes the tool runs a project through seven stages. Each stage feeds the next, and the five reusable ingredients you author in the middle all converge when a pass is applied. The map below shows what feeds what — follow the solid arrows for the main flow, the purple arrows for how an ingredient reaches a pass.</p>
+<figure>
+  <a href="images/pipeline.svg" target="_blank"><img src="images/pipeline.svg" alt="Seven-stage pipeline: set up, build, author the five ingredients, assemble passes, apply, validate and submit, output" style="background:#191c21"></a>
+  <figcaption>The VCR Manager pipeline end to end. Click to open the diagram full size.</figcaption>
+</figure>
+<ol>
+  <li><strong>Set up</strong> — point the tool at your material library and farm, once per project (<a href="#settings">Project Settings</a>).</li>
+  <li><strong>Build the scene</strong> — <a href="#fbx">Build from FBX</a> imports a SmartBuild file and lays down the layers, ingredients and a starting pass tree automatically.</li>
+  <li><strong>Author the ingredients</strong> — refine the five building blocks in the <em>Scene Manager</em> side panel. Each is defined once and reused everywhere.</li>
+  <li><strong>Assemble render passes</strong> — a pass <em>references</em> a Layer State plus any Object Property and Animation sets; it never copies them, so edits flow through.</li>
+  <li><strong>Apply &amp; check</strong> — applying a pass converges everything (layer visibility, zone materials, light rules, properties, animation, material override) onto the live scene in one undoable step, and Preview gives a quick draft.</li>
+  <li><strong>Validate &amp; submit</strong> — a <strong>preflight</strong> check catches unresolved cameras, materials, frame ranges and duplicate outputs <em>before</em> the farm sees them; then render locally or submit to Deadline or Chaos Cloud.</li>
+  <li><strong>Output</strong> — one clean EXR per pass, named from the pass, ready for the downstream comp.</li>
+</ol>
+<div class="tip">The big idea: you describe <em>ingredients</em> and <em>passes</em>, never the scene state directly. The tool assembles the scene for each deliverable on demand — so a new colourway or trim is a new state or package, not another day of manual scene surgery.</div>
+
 <h2 id="getting-started">Getting Started</h2>
 <h3>Requirements</h3>
 <ul>
@@ -95,10 +113,12 @@
 <figure><a href="images/main_states.png" target="_blank"><img src="images/main_states.png" alt="Main window with the Layer States panel open"></a><figcaption>Full layout: Render Passes on the left, a side tool (here Layer States) on the right. Click any screenshot to open it at full size.</figcaption></figure>
 <p>Each column reads top-to-bottom the same way:</p>
 <ol>
-  <li><strong>Search bar</strong> — filters the list below as you type. Left filters passes, right filters whatever tool is open.</li>
-  <li><strong>Tabs</strong> — on the left, <em>All / Exterior / Interior</em> filter passes by type (with live counts). On the right, tabs switch between the five side tools. The blue accent marks the active tab. Clicking the active side tab closes the panel.</li>
+  <li><strong>Search bar</strong> — filters the list below as you type (both panels filter live). Left filters passes, right filters whatever tool is open.</li>
+  <li><strong>Tabs</strong> — on the left, <em>All / Exterior / Interior</em> filter passes by type (with live counts). On the right, tabs switch between the five side tools. The blue accent marks the active tab.</li>
   <li><strong>The list</strong> — with slim dark scrollbars; drag the thumb, click the track to page, or use the mouse wheel.</li>
+  <li><strong>Action toolbar</strong> — a row of icon buttons at the foot of each panel for the everyday actions of the active context (apply, add, clone, edit, delete and so on). Every button also lives in the right-click menu; the toolbar is just the fast path. Buttons dim when they don't apply to the current selection, and hovering any one names it.</li>
 </ol>
+<p>The <strong>Scene Manager</strong> handle — the slim vertical strip between the two columns — opens and closes the right-hand side panel. The chevrons point the way the panel edge will move.</p>
 <h3>Menu bar</h3>
 <table>
 <tr><th>Menu</th><th>Contents</th></tr>
@@ -184,14 +204,17 @@
 <p>Animation Sets store keyframed motion (with tangents preserved) for named groups of targets, and are applied per pass via Pass Settings. A pass with an animation set gets its motion applied before rendering; the tool restores original controllers on save so baked animation never leaks into the scene file.</p>
 
 <h2 id="render">Rendering &amp; Submission</h2>
+<h3>Preflight validation <span class="pill">New</span></h3>
+<p>Before any submission, a <strong>preflight check</strong> resolves everything the farm will need and reports problems in one dialog while you can still fix them — render cameras that no longer exist, zone materials missing from the library and scene, empty or inverted frame ranges, and passes that would write to the same output file. Nothing is sent until you've seen the list. The same details are written to a session log at <code>%temp%\RapidDrive.log</code>, so a half-finished batch is always diagnosable after the fact.</p>
 <h3>Preview &amp; local rendering</h3>
-<p><strong>Render &gt; Preview</strong> applies and renders the selected pass in the viewport renderer. <strong>Render &gt; Local Machine</strong> renders selected passes in sequence — each pass configuration is applied, then rendered with its own time, size and camera.</p>
+<p><strong>Render &gt; Preview</strong> applies and renders the selected pass in the viewport renderer at half resolution for a quick look. <strong>Render &gt; Local Machine</strong> renders selected passes in sequence — each pass configuration is applied, then rendered with its own time, size and camera.</p>
 <h3>Deadline</h3>
 <figure><a href="images/dlg_deadline.png" target="_blank"><img src="images/dlg_deadline.png" alt="Deadline submit dialog"></a><figcaption>Deadline submission — output directory can be derived from the scene name automatically.</figcaption></figure>
 <ul>
   <li><strong>Submit Selected</strong> sends the selected passes; <strong>Submit All</strong> sends every pass in the scene — regardless of any type tab or search filter active in the UI.</li>
-  <li>Disabled passes and passes with missing states are skipped, with a summary of what was skipped.</li>
-  <li>Each pass is submitted as its own job with a saved scene snapshot, so farm renders match exactly what the pass defines.</li>
+  <li>Disabled and hidden passes, and passes with missing states, are skipped with a summary of exactly what was left out.</li>
+  <li>Each pass is submitted as its own job with a saved scene snapshot. All of the pass's overrides — object properties, animation and the material override — are baked into that snapshot, so the farm renders exactly what the pass defines.</li>
+  <li>A successful submission stamps each pass with the time it was sent, so you can tell at a glance what has already gone to the farm.</li>
 </ul>
 <h3>Chaos Cloud</h3>
 <p><strong>Render &gt; Submit to Chaos Cloud…</strong> exports .vrscene files per pass and hands them to the Chaos Cloud client. Configure the client path, output suffix and cache folder in the dialog.</p>
@@ -230,9 +253,10 @@
 
 <h2 id="tips">Tips &amp; Shortcuts</h2>
 <ul>
-  <li><strong>Double-click</strong> a pass or state to apply it.</li>
+  <li><strong>Double-click</strong> a pass or state to apply it. Applying is a single <kbd>Ctrl</kbd>+<kbd>Z</kbd> away from undo.</li>
   <li><kbd>Insert</kbd> / <kbd>Delete</kbd> on the Layer States tab create/remove states.</li>
-  <li>Clicking the <strong>active side tab</strong> closes the panel; the Passes menu does the same.</li>
+  <li>The <strong>Scene Manager</strong> handle between the columns opens and closes the side panel.</li>
+  <li>Every panel has an <strong>action toolbar</strong> at its foot mirroring the right-click menu; <kbd>Ctrl</kbd>+click the pass <em>Apply</em> button to apply package deltas only.</li>
   <li>Search boxes filter live and combine with the type tabs; while filtering a picker dialog, your existing selections stay pinned and safe.</li>
   <li>The zone <strong>Material dropdown</strong> is the fastest way to try a colour across a whole zone — and it's one undo step.</li>
   <li>Hidden rows are included in searches, so you can always find a hidden pass by typing its name.</li>
@@ -240,7 +264,7 @@
 
 <footer>
   RapidDrive — VCR Manager · Created by Ben Robins · Publicis Production<br>
-  Documentation generated July 2026. Screenshots taken from a working scene &mdash; click any image to view it full size.
+  Documentation for v1.5 · updated July 2026. Screenshots taken from a working scene &mdash; click any image to view it full size.
 </footer>
 </main>
 </div>
