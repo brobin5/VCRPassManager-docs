@@ -113,9 +113,12 @@
   <li>3ds Max (tested on 2023). The panel is native Qt (PySide2) — no extra installs.</li>
   <li><code>ObjectListView.dll</code> (bundled in <code>libs/</code>) is only needed by the legacy window.</li>
 </ul>
+<h3>First-time install</h3>
+<p>Run the installer once: <strong>Scripting &gt; Run Script</strong> and pick <code>Install_VCRPassManager.ms</code> from the RapidDrive folder. It copies the icons, registers the <strong>RapidDrive</strong> category macros, creates the <em>Rapid Drive</em> toolbar with the launch button, and installs a startup script that keeps everything current automatically — no restart needed.</p>
 <h3>Running the tool</h3>
 <ul>
-  <li>Click the <strong>RapidDrive</strong> toolbar button (the <code>RapidDriveQt</code> macro), or</li>
+  <li>Click the <strong>RapidDrive</strong> toolbar button, or</li>
+  <li>add your own button/shortcut from <strong>Customize &gt; Customize User Interface</strong>, category <strong>RapidDrive</strong>, or</li>
   <li>in the MAXScript Listener: <code>fileIn @"...\vcrqt\launch_rapiddrive.ms"</code></li>
 </ul>
 <div class="tip">The window can be docked to either edge of Max via <strong>File &gt; Dock RapidDrive Left/Right</strong>, or floated. It remembers pass selection and expansion between sessions of the same scene.</div>
