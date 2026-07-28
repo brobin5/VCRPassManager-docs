@@ -51,6 +51,7 @@
 <nav>
   <h4>Start Here</h4>
   <a href="#overview">What is VCR Manager?</a>
+  <a href="#whats-new">What's New in 1.6</a>
   <a href="#how-it-works">How It Works</a>
   <a href="#getting-started">Getting Started</a>
   <a href="#main-window">The Main Window</a>
@@ -78,6 +79,17 @@
 <p><strong>VCR Manager</strong> is a 3ds&nbsp;Max tool for rendering vehicles in many variants without ever configuring the scene by hand. You describe each deliverable once — as a <em>Render Pass</em> — and the tool takes care of switching the scene into the right shape for it: which layers are visible, which materials each zone wears, how the lights behave, what the camera, frame range and resolution are, and where the frames go. Then you render locally or submit the whole set to Deadline or Chaos&nbsp;Cloud in one click.</p>
 <p>It is built around five kinds of reusable building blocks — <a href="#states">Layer States</a>, <a href="#zones">Material Zones</a>, <a href="#lights">Light Rules</a>, <a href="#props">Object Properties</a> and <a href="#anim">Animation Sets</a> — which passes combine like ingredients. Change an ingredient once and every pass that uses it updates.</p>
 
+<h2 id="whats-new">What's New in 1.6</h2>
+<p>Version 1.6 rebuilds the entire interface as a <strong>native Qt panel</strong>. Everything underneath is unchanged — the same scene data, the same proven apply and submission engines — so existing scenes open exactly as before. What you'll notice:</p>
+<ul>
+  <li><strong>A real window.</strong> The panel floats with a proper title bar — minimize, maximize, close — and never snaps into a dock when you drag it. Docking into Max is still there, deliberately, via <strong>File &gt; Dock RapidDrive Left/Right</strong>.</li>
+  <li><strong>Icon toolbars you can move.</strong> The text buttons are now clean icon glyphs, docked at the bottom by default. Right-click any toolbar to dock them to the <em>top, bottom or left</em> — one choice for the whole window, remembered per user.</li>
+  <li><strong>A tidier layout.</strong> The search field is the first thing in each column, the side tabs carry their full names (Layer States, Material Zones, Light Rules, Object Props, Anim Sets), and a split status strip reports each panel plainly — <em>"Loaded — 44 Material Zones"</em>.</li>
+  <li><strong>The Scene Manager toggle</strong> moved to a small <strong>◨ button in the menu bar's corner</strong> — the same idiom VS Code uses for its side panel. It glows with the accent colour while the side is open.</li>
+  <li><strong>Faster on heavy scenes.</strong> Material Zones load about four times faster on production vehicles.</li>
+  <li><strong>The legacy window is still aboard</strong> during the transition — <strong>File &gt; Open Legacy VCR Manager</strong> opens the old interface any time.</li>
+</ul>
+
 <h2 id="how-it-works">How It Works</h2>
 <p>Behind the scenes the tool runs a project through seven stages. Each stage feeds the next, and the five reusable ingredients you author in the middle all converge when a pass is applied. The map below shows what feeds what — follow the solid arrows for the main flow, the purple arrows for how an ingredient reaches a pass.</p>
 <figure>
@@ -98,13 +110,13 @@
 <h2 id="getting-started">Getting Started</h2>
 <h3>Requirements</h3>
 <ul>
-  <li>3ds Max (tested on 2023) with MAXScript</li>
-  <li><code>ObjectListView.dll</code> (bundled in <code>libs/</code> — loaded automatically)</li>
+  <li>3ds Max (tested on 2023). The panel is native Qt (PySide2) — no extra installs.</li>
+  <li><code>ObjectListView.dll</code> (bundled in <code>libs/</code>) is only needed by the legacy window.</li>
 </ul>
 <h3>Running the tool</h3>
 <ul>
-  <li><strong>MAXScript &gt; Run Script</strong> and select <code>VCRManager.ms</code>, or</li>
-  <li>in the MAXScript Listener: <code>fileIn @"...\VCRManager.ms"</code></li>
+  <li>Click the <strong>RapidDrive</strong> toolbar button (the <code>RapidDriveQt</code> macro), or</li>
+  <li>in the MAXScript Listener: <code>fileIn @"...\vcrqt\launch_rapiddrive.ms"</code></li>
 </ul>
 <div class="tip">The window can be docked to either edge of Max via <strong>File &gt; Dock RapidDrive Left/Right</strong>, or floated. It remembers pass selection and expansion between sessions of the same scene.</div>
 
@@ -113,17 +125,18 @@
 <figure><a href="images/main_states.png" target="_blank"><img src="images/main_states.png" alt="Main window with the Layer States panel open"></a><figcaption>Full layout: Render Passes on the left, a side tool (here Layer States) on the right. Click any screenshot to open it at full size.</figcaption></figure>
 <p>Each column reads top-to-bottom the same way:</p>
 <ol>
-  <li><strong>Search bar</strong> — filters the list below as you type (both panels filter live). Left filters passes, right filters whatever tool is open.</li>
-  <li><strong>Tabs</strong> — on the left, <em>All / Exterior / Interior</em> filter passes by type (with live counts). On the right, tabs switch between the five side tools. The blue accent marks the active tab.</li>
+  <li><strong>Search bar</strong> — the first thing in each column; filters the list below as you type (both panels filter live). Left filters passes, right filters whatever tool is open.</li>
+  <li><strong>Tabs</strong> — on the left, <em>All / Exterior / Interior</em> filter passes by type (with live counts). On the right, tabs switch between the five side tools by name. The blue accent marks the active tab.</li>
   <li><strong>The list</strong> — with slim dark scrollbars; drag the thumb, click the track to page, or use the mouse wheel.</li>
-  <li><strong>Action toolbar</strong> — a row of icon buttons at the foot of each panel for the everyday actions of the active context (apply, add, clone, edit, delete and so on). Every button also lives in the right-click menu; the toolbar is just the fast path. Buttons dim when they don't apply to the current selection, and hovering any one names it.</li>
+  <li><strong>Action toolbar</strong> — a row of icon buttons for the everyday actions of the active context (apply, add, clone, edit, delete and so on), docked at the bottom by default. Every button also lives in the right-click menu; the toolbar is just the fast path. Buttons dim when they don't apply to the current selection, hovering any one names it, and <strong>right-clicking a toolbar docks the toolbars top, bottom or left</strong> — one choice for the whole window, remembered per user.</li>
+  <li><strong>Status readout</strong> — the bottom strip is split per panel and states plainly what each side holds: <em>"Loaded — 11 Render Passes"</em> on the left, <em>"Loaded — 44 Material Zones"</em> on the right.</li>
 </ol>
-<p>The <strong>Scene Manager</strong> handle — the slim vertical strip between the two columns — opens and closes the right-hand side panel. The chevrons point the way the panel edge will move.</p>
+<p>The <strong>◨ button in the menu bar's right corner</strong> opens and closes the Scene Manager side. The window widens to make room and narrows back when the side closes; the button takes the accent colour while the side is open.</p>
 <h3>Menu bar</h3>
 <table>
 <tr><th>Menu</th><th>Contents</th></tr>
-<tr><td>File</td><td>Project Settings, Dock Left/Right, Undock, Remove All RapidDrive Data</td></tr>
-<tr><td>Passes</td><td>Add/Clone/Delete Pass, Build from FBX/Scene, and the five side-tool managers</td></tr>
+<tr><td>File</td><td>Project Settings, Dock RapidDrive Left/Right, Undock, Open Legacy VCR Manager, Remove All RapidDrive Data</td></tr>
+<tr><td>Passes</td><td>Add/Edit/Clone/Delete/Rename Pass, Quick Pass Settings, Build from FBX/Scene, and the five side-tool managers</td></tr>
 <tr><td>Render</td><td>Preview, Local Machine, Submit to Deadline, Submit to Chaos Cloud</td></tr>
 <tr><td>Help</td><td>About &amp; this documentation</td></tr>
 </table>
@@ -255,8 +268,10 @@
 <ul>
   <li><strong>Double-click</strong> a pass or state to apply it. Applying is a single <kbd>Ctrl</kbd>+<kbd>Z</kbd> away from undo.</li>
   <li><kbd>Insert</kbd> / <kbd>Delete</kbd> on the Layer States tab create/remove states.</li>
-  <li>The <strong>Scene Manager</strong> handle between the columns opens and closes the side panel.</li>
-  <li>Every panel has an <strong>action toolbar</strong> at its foot mirroring the right-click menu; <kbd>Ctrl</kbd>+click the pass <em>Apply</em> button to apply package deltas only.</li>
+  <li>The <strong>◨ corner button</strong> in the menu bar opens and closes the Scene Manager side.</li>
+  <li>Every panel has an <strong>icon toolbar</strong> mirroring the right-click menu — right-click to dock the toolbars top, bottom or left. <kbd>Ctrl</kbd>+click the pass <em>Apply</em> button to apply package deltas only.</li>
+  <li>The <strong>State / Include column</strong> can be hidden from the pass list's right-click menu (Organise) if you prefer a single-column view.</li>
+  <li>Window size and position, the open side tab, toolbar placements and column choices are all remembered <strong>per user</strong>.</li>
   <li>Search boxes filter live and combine with the type tabs; while filtering a picker dialog, your existing selections stay pinned and safe.</li>
   <li>The zone <strong>Material dropdown</strong> is the fastest way to try a colour across a whole zone — and it's one undo step.</li>
   <li>Hidden rows are included in searches, so you can always find a hidden pass by typing its name.</li>
@@ -264,7 +279,7 @@
 
 <footer>
   RapidDrive — VCR Manager · Created by Ben Robins · Publicis Production<br>
-  Documentation for v1.5 · updated July 2026. Screenshots taken from a working scene &mdash; click any image to view it full size.
+  Documentation for v1.6 · updated July 2026. Screenshots taken from a working scene &mdash; click any image to view it full size.
 </footer>
 </main>
 </div>
