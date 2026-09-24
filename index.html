@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RapidDrive VCR Manager — Documentation</title>
+<title>RapidDrive — Documentation</title>
 <style>
   :root {
     --bg: #16181c; --panel: #1e2126; --panel2: #23272d; --border: #33383f;
@@ -50,13 +50,14 @@
 <div class="layout">
 <nav>
   <h4>Start Here</h4>
-  <a href="#overview">What is VCR Manager?</a>
-  <a href="#whats-new">What's New in 1.6</a>
+  <a href="#overview">What is RapidDrive?</a>
+  <a href="#whats-new">What's New in 1.7</a>
   <a href="#how-it-works">How It Works</a>
   <a href="#getting-started">Getting Started</a>
   <a href="#main-window">The Main Window</a>
   <h4>Core Tools</h4>
   <a href="#passes">Render Passes</a>
+  <a href="#categories">Pass Categories</a>
   <a href="#states">Layer States</a>
   <a href="#zones">Material Zones</a>
   <a href="#lights">Light Rules</a>
@@ -64,9 +65,11 @@
   <a href="#anim">Animation Sets</a>
   <h4>Output</h4>
   <a href="#render">Rendering &amp; Submission</a>
-  <h4>Scene Building</h4>
+  <h4>Vehicle Projects (VCR)</h4>
+  <a href="#profile">The VCR profile</a>
   <a href="#fbx">Build from FBX</a>
   <a href="#buildscene">Build from Scene</a>
+  <a href="#migrate">Migrating RPManager scenes</a>
   <h4>Reference</h4>
   <a href="#settings">Project Settings</a>
   <a href="#storage">Data Storage</a>
@@ -74,53 +77,58 @@
 </nav>
 <main>
 
-<div class="crumb">RapidDrive / VCR Manager / Documentation</div>
-<h1 id="overview">RapidDrive — VCR Manager</h1>
-<p><strong>VCR Manager</strong> is a 3ds&nbsp;Max tool for rendering vehicles in many variants without ever configuring the scene by hand. You describe each deliverable once — as a <em>Render Pass</em> — and the tool takes care of switching the scene into the right shape for it: which layers are visible, which materials each zone wears, how the lights behave, what the camera, frame range and resolution are, and where the frames go. Then you render locally or submit the whole set to Deadline or Chaos&nbsp;Cloud in one click.</p>
+<div class="crumb">RapidDrive / Documentation</div>
+<h1 id="overview">RapidDrive</h1>
+<p><strong>RapidDrive</strong> is a 3ds&nbsp;Max tool for rendering a scene in many variants without ever configuring it by hand. You describe each deliverable once — as a <em>Render Pass</em> — and the tool switches the scene into the right shape for it: which layers are visible, which materials each zone wears, how the lights behave, what the camera, frame range and resolution are, and where the frames go. Then you render locally or submit the whole set to Deadline or Chaos&nbsp;Cloud in one click.</p>
+<p>It works for any project — a product turntable, a set of packaging shots, a day / night / studio series — and it grew up on vehicle work, where a car ships in dozens of grades, colourways and option packs. Vehicle projects keep everything they rely on behind the <a href="#profile">VCR profile</a>; every other project starts clean and defines its own pass categories.</p>
 <p>It is built around five kinds of reusable building blocks — <a href="#states">Layer States</a>, <a href="#zones">Material Zones</a>, <a href="#lights">Light Rules</a>, <a href="#props">Object Properties</a> and <a href="#anim">Animation Sets</a> — which passes combine like ingredients. Change an ingredient once and every pass that uses it updates.</p>
 
-<h2 id="whats-new">What's New in 1.6</h2>
-<p>Version 1.6 rebuilds the entire interface as a <strong>native Qt panel</strong>. Everything underneath is unchanged — the same scene data, the same proven apply and submission engines — so existing scenes open exactly as before. What you'll notice:</p>
+<h2 id="whats-new">What's New in 1.7</h2>
 <ul>
-  <li><strong>A real window.</strong> The panel floats with a proper title bar — minimize, maximize, close — and never snaps into a dock when you drag it. Docking into Max is still there, deliberately, via <strong>File &gt; Dock RapidDrive Left/Right</strong>.</li>
-  <li><strong>Icon toolbars you can move.</strong> The text buttons are now clean icon glyphs, docked at the bottom by default. Right-click any toolbar to dock them to the <em>top, bottom or left</em> — one choice for the whole window, remembered per user.</li>
-  <li><strong>A tidier layout.</strong> The search field is the first thing in each column, the side tabs carry their full names (Layer States, Material Zones, Light Rules, Object Props, Anim Sets), and a split status strip reports each panel plainly — <em>"Loaded — 44 Material Zones"</em>.</li>
-  <li><strong>The Scene Manager toggle</strong> moved to a small <strong>◨ button in the menu bar's corner</strong> — the same idiom VS Code uses for its side panel. It glows with the accent colour while the side is open.</li>
-  <li><strong>Faster on heavy scenes.</strong> Material Zones load about four times faster on production vehicles.</li>
-  <li><strong>The legacy window is still aboard</strong> during the transition — <strong>File &gt; Open Legacy VCR Manager</strong> opens the old interface any time.</li>
+  <li><strong>One tool for every project.</strong> The product is RapidDrive; the "VCR Manager" name is retired. Nothing on disk changed — every existing scene opens exactly as before.</li>
+  <li><strong>Pass categories are yours to define.</strong> The Exterior / Interior tabs are now a per-scene list: add, rename, remove and reorder from the <strong>Manage…</strong> chip beside the tabs. Tabs, counts, the Set Category menu and the pass editor follow the list; passes sort by category order. See <a href="#categories">Pass Categories</a>.</li>
+  <li><strong>The project profile.</strong> Project Settings gains a Profile: <em>VCR (vehicles)</em> keeps the SmartBuild menus, the Exterior / Interior defaults, the Combine States prefill and the word <em>Package</em>; <em>Generic</em> switches that off and calls child passes <em>Variants</em>. Auto-detect (the default) reads it from the passes already in the scene, so nobody has to set anything. See <a href="#profile">The VCR profile</a>.</li>
+  <li><strong>The applied-pass marker is robust.</strong> Retyping, starring, hiding or disabling the pass you have applied no longer loses the marker or the overrides on the next save.</li>
+  <li><strong>Deadline fixes.</strong> Fan-out jobs name the pass camera and strip hidden layers on the node exactly like classic submissions; classic batches are stamped per round; jobs no longer carry your workstation's environment or your sticky missing-DLL setting; job comments say which path sent them.</li>
+  <li><strong>A brand-new scene sets itself up</strong> from Add Render Pass, Create New State, Project Settings and friends — the classic window is no longer needed for that, and File &gt; Open Legacy is gone from the menu.</li>
+  <li><strong>Object Props:</strong> the Generate GI and Receive GI toggles now persist from the editor.</li>
+  <li><strong>Legacy RPManager scenes migrate.</strong> One Deadline job per scene converts an RPManager setup into RapidDrive passes, states and zones, saved beside the original with a report. See <a href="#migrate">Migrating RPManager scenes</a>.</li>
 </ul>
 
 <h2 id="how-it-works">How It Works</h2>
 <p>Behind the scenes the tool runs a project through seven stages. Each stage feeds the next, and the five reusable ingredients you author in the middle all converge when a pass is applied. The map below shows what feeds what — follow the solid arrows for the main flow, the purple arrows for how an ingredient reaches a pass.</p>
 <figure>
   <a href="images/pipeline.svg" target="_blank"><img src="images/pipeline.svg" alt="Seven-stage pipeline: set up, build, author the five ingredients, assemble passes, apply, validate and submit, output" style="background:#191c21"></a>
-  <figcaption>The VCR Manager pipeline end to end. Click to open the diagram full size.</figcaption>
+  <figcaption>The RapidDrive pipeline end to end. Click to open the diagram full size.</figcaption>
 </figure>
 <ol>
-  <li><strong>Set up</strong> — point the tool at your material library and farm, once per project (<a href="#settings">Project Settings</a>).</li>
-  <li><strong>Build the scene</strong> — <a href="#fbx">Build from FBX</a> imports a SmartBuild file and lays down the layers, ingredients and a starting pass tree automatically.</li>
+  <li><strong>Set up</strong> — choose the profile, point the tool at your material library and farm, once per project (<a href="#settings">Project Settings</a>).</li>
+  <li><strong>Build the scene</strong> — on a vehicle project, <a href="#fbx">Build from FBX</a> imports a SmartBuild file and lays down the layers, ingredients and a starting pass tree automatically. On any other project you build the ingredients by hand from the Scene Manager.</li>
   <li><strong>Author the ingredients</strong> — refine the five building blocks in the <em>Scene Manager</em> side panel. Each is defined once and reused everywhere.</li>
-  <li><strong>Assemble render passes</strong> — a pass <em>references</em> a Layer State plus any Object Property and Animation sets; it never copies them, so edits flow through.</li>
+  <li><strong>Assemble render passes</strong> — a pass <em>references</em> a Layer State plus any Object Property and Animation sets; it never copies them, so edits flow through. Group base passes into the categories that make sense for the job.</li>
   <li><strong>Apply &amp; check</strong> — applying a pass converges everything (layer visibility, zone materials, light rules, properties, animation, material override) onto the live scene in one undoable step, and Preview gives a quick draft.</li>
   <li><strong>Validate &amp; submit</strong> — a <strong>preflight</strong> check catches unresolved cameras, materials, frame ranges and duplicate outputs <em>before</em> the farm sees them; then render locally or submit to Deadline or Chaos Cloud.</li>
   <li><strong>Output</strong> — one clean EXR per pass, named from the pass, ready for the downstream comp.</li>
 </ol>
-<div class="tip">The big idea: you describe <em>ingredients</em> and <em>passes</em>, never the scene state directly. The tool assembles the scene for each deliverable on demand — so a new colourway or trim is a new state or package, not another day of manual scene surgery.</div>
+<div class="tip">The big idea: you describe <em>ingredients</em> and <em>passes</em>, never the scene state directly. The tool assembles the scene for each deliverable on demand — so a new colourway, a new packaging SKU or a night version is a new state or variant, not another day of manual scene surgery.</div>
 
 <h2 id="getting-started">Getting Started</h2>
 <h3>Requirements</h3>
 <ul>
   <li>3ds Max (tested on 2023). The panel is native Qt (PySide2) — no extra installs.</li>
-  <li><code>ObjectListView.dll</code> (bundled in <code>libs/</code>) is only needed by the legacy window.</li>
+  <li><code>ObjectListView.dll</code> (bundled in <code>libs/</code>) is only needed by the classic window.</li>
 </ul>
 <h3>First-time install</h3>
-<p>Run the installer once: <strong>Scripting &gt; Run Script</strong> and pick <code>Install_VCRPassManager.ms</code> from the RapidDrive folder. It copies the icons, registers the <strong>RapidDrive</strong> category macros, creates the <em>Rapid Drive</em> toolbar with the launch button, and installs a startup script that keeps everything current automatically — no restart needed.</p>
+<p>Run the installer once: <strong>Scripting &gt; Run Script</strong> and pick <code>Install_VCRPassManager.ms</code> from the RapidDrive folder you want to run (production, or a branch worktree you are testing). It copies the icons, registers the <strong>RapidDrive</strong> category macros, creates the <em>Rapid Drive</em> toolbar with the launch button, and installs a startup script that keeps everything current automatically — no restart needed. The button launches the folder you installed from (hover it to see which; Help &gt; About shows the version); re-run the installer from another folder to switch, and restart Max if you are going back to production in the same session. When you have finished testing a branch, re-run the installer from production.</p>
 <h3>Running the tool</h3>
 <ul>
+  <li><strong>RapidDrive &gt; RapidDrive</strong> in the main menu bar (the menu also holds Max Bridge, Camera Match and a <strong>Scripts</strong> submenu of the studio's everyday scripts; the installer adds it on 3ds Max 2023 and 2025). To add a script to that submenu, drop the <code>.ms</code> into <code>tools\scripts\&lt;folder&gt;\</code> in the RapidDrive folder and commit it, or use <strong>RapidDrive &gt; Manage Scripts...</strong>, which also ticks entries on and off and renames them.</li>
   <li>Click the <strong>RapidDrive</strong> toolbar button, or</li>
   <li>add your own button/shortcut from <strong>Customize &gt; Customize User Interface</strong>, category <strong>RapidDrive</strong>, or</li>
   <li>in the MAXScript Listener: <code>fileIn @"...\vcrqt\launch_rapiddrive.ms"</code></li>
 </ul>
+<h3>A new scene</h3>
+<p>A scene has no RapidDrive settings until you create something. The first <strong>Add Render Pass</strong> (or Create New State, Project Settings…) asks once — <em>"This scene has no RapidDrive settings yet. Set it up now?"</em> — and adds them. Open <strong>Project Settings</strong> to pick the profile if the scene is not a vehicle job, then <strong>Manage…</strong> beside the tabs to name your categories.</p>
 <div class="tip">The window can be docked to either edge of Max via <strong>File &gt; Dock RapidDrive Left/Right</strong>, or floated. It remembers pass selection and expansion between sessions of the same scene.</div>
 
 <h2 id="main-window">The Main Window</h2>
@@ -129,7 +137,7 @@
 <p>Each column reads top-to-bottom the same way:</p>
 <ol>
   <li><strong>Search bar</strong> — the first thing in each column; filters the list below as you type (both panels filter live). Left filters passes, right filters whatever tool is open.</li>
-  <li><strong>Tabs</strong> — on the left, <em>All / Exterior / Interior</em> filter passes by type (with live counts). On the right, tabs switch between the five side tools by name. The blue accent marks the active tab.</li>
+  <li><strong>Tabs</strong> — on the left, <em>All</em> plus one chip per <a href="#categories">pass category</a> (with live counts) and the <strong>Manage…</strong> chip. On the right, tabs switch between the five side tools by name. The blue accent marks the active tab.</li>
   <li><strong>The list</strong> — with slim dark scrollbars; drag the thumb, click the track to page, or use the mouse wheel.</li>
   <li><strong>Action toolbar</strong> — a row of icon buttons for the everyday actions of the active context (apply, add, clone, edit, delete and so on), docked at the bottom by default. Every button also lives in the right-click menu; the toolbar is just the fast path. Buttons dim when they don't apply to the current selection, hovering any one names it, and <strong>right-clicking a toolbar docks the toolbars top, bottom or left</strong> — one choice for the whole window, remembered per user.</li>
   <li><strong>Status readout</strong> — the bottom strip is split per panel and states plainly what each side holds: <em>"Loaded — 11 Render Passes"</em> on the left, <em>"Loaded — 44 Material Zones"</em> on the right.</li>
@@ -138,27 +146,28 @@
 <h3>Menu bar</h3>
 <table>
 <tr><th>Menu</th><th>Contents</th></tr>
-<tr><td>File</td><td>Project Settings, Dock RapidDrive Left/Right, Undock, Open Legacy VCR Manager, Remove All RapidDrive Data</td></tr>
-<tr><td>Passes</td><td>Add/Edit/Clone/Delete/Rename Pass, Quick Pass Settings, Build from FBX/Scene, and the five side-tool managers</td></tr>
+<tr><td>File</td><td>Project Settings, Dock RapidDrive Left/Right, Undock, Remove All RapidDrive Data</td></tr>
+<tr><td>Passes</td><td>Add/Edit/Clone/Delete/Rename Pass, Quick Pass Settings, Manage Categories, Build from FBX/Scene (VCR profile), and the five side-tool managers</td></tr>
 <tr><td>Render</td><td>Preview, Local Machine, Submit to Deadline, Submit to Chaos Cloud</td></tr>
 <tr><td>Help</td><td>About &amp; this documentation</td></tr>
 </table>
 
 <h2 id="passes">Render Passes</h2>
 <p>Render Passes are the heart of the tool. Each pass is a complete recipe: a layer state, lighting state, camera, frame range, resolution and output name. Apply a pass and the scene snaps into that configuration; render it and you get that deliverable.</p>
-<figure><a href="images/main_exterior.png" target="_blank"><img src="images/main_exterior.png" alt="Type tabs filtering"></a><figcaption>The Exterior tab filtering the pass list. Counts update live; the search box combines with the tab filter.</figcaption></figure>
+<figure><a href="images/main_exterior.png" target="_blank"><img src="images/main_exterior.png" alt="Category tabs filtering"></a><figcaption>A category tab filtering the pass list (here a vehicle scene's Exterior). Counts update live; the search box combines with the tab filter.</figcaption></figure>
 <h3>Hierarchy</h3>
 <ul>
-  <li><strong>Base Pass</strong> — a root-level pass with its own state assignment. Typed <em>exterior</em> or <em>interior</em>.</li>
-  <li><strong>Package Pass</strong> — a child of a Base Pass that layers include/exclude overrides on top (option packs, trims, markets).</li>
+  <li><strong>Base Pass</strong> — a root-level pass with its own state assignment, filed under one of your <a href="#categories">categories</a> (or none).</li>
+  <li><strong>Variant</strong> — a child of a Base Pass that layers include/exclude overrides on top: a colourway, a SKU, a market. On a vehicle project the same thing is called a <strong>Package</strong> (option packs, trims) — one concept, two words.</li>
 </ul>
 <h3>Creating and editing</h3>
 <ul>
-  <li>Right-click &gt; <strong>Add Base RenderPass</strong> (or the Passes menu). Select a Base Pass first to add a Package under it.</li>
+  <li>Right-click &gt; <strong>Add Base RenderPass</strong> (or the Passes menu). Select a Base Pass first to add a Variant under it.</li>
   <li><strong>Double-click</strong> a pass to apply its configuration to the scene.</li>
   <li>Right-click &gt; <strong>Pass Settings</strong> for the full editor, or <strong>Quick Pass Settings</strong> for a fast minimal one.</li>
+  <li>Right-click &gt; <strong>Set Category</strong> moves the selected base passes to another category (children are never categorised).</li>
 </ul>
-<figure><a href="images/dlg_passsettings.png" target="_blank"><img src="images/dlg_passsettings.png" alt="Pass Settings dialog"></a><figcaption>Pass Settings: type &amp; name, camera, scene configuration (states, layers, properties, animation sets), material override, time output, size and filename override.</figcaption></figure>
+<figure><a href="images/dlg_passsettings.png" target="_blank"><img src="images/dlg_passsettings.png" alt="Pass Settings dialog"></a><figcaption>Pass Settings: category &amp; name, camera, scene configuration (states, layers, properties, animation sets), material override, time output, size and filename override.</figcaption></figure>
 <h3>Animation range syntax</h3>
 <table>
 <tr><th>Format</th><th>Example</th><th>Result</th></tr>
@@ -168,7 +177,18 @@
 <tr><td>List</td><td><code>1,5,10,20</code></td><td>Those frames</td></tr>
 <tr><td>Mixed</td><td><code>1-10,20,30-50</code></td><td>Any combination</td></tr>
 </table>
-<div class="tip">Passes can be <strong>hidden</strong> (right-click) to declutter the list without deleting them, and <strong>disabled</strong> to keep them out of submissions. A pass whose Type doesn't match the active type tab is never lost — Submit All always works from the full pass set, and saving a pass the current tab would hide switches you back to All automatically.</div>
+<div class="tip">Passes can be <strong>hidden</strong> (right-click) to declutter the list without deleting them, and <strong>disabled</strong> to keep them out of submissions. A pass whose category doesn't match the active tab is never lost — Submit All always works from the full pass set, and saving a pass the current tab would hide switches you back to All automatically.</div>
+
+<h2 id="categories">Pass Categories <span class="pill">New in 1.7</span></h2>
+<p>Categories are the tabs above the pass list — a way to file your <em>base</em> passes by whatever matters on the job: <em>Exterior / Interior</em> on a car, <em>Day / Night</em> on an architecture set, <em>Front / Back / Detail</em> on packaging. They are stored in the scene, so the list travels with the file.</p>
+<ul>
+  <li><strong>Manage…</strong> (the chip after the tabs, or Passes &gt; Manage Categories…) opens the editor: <strong>Add</strong>, <strong>Rename</strong>, <strong>Remove</strong>, <strong>Up</strong> / <strong>Down</strong>. Changes land in the scene when you press OK.</li>
+  <li>Each category has a <strong>Label</strong> (what the tab says) and a <strong>Key</strong> (what is stored on the passes, derived from the label). Renaming the label leaves the passes alone; changing the key moves them along.</li>
+  <li>Removing a category with passes on it asks where they should go — another category, or left uncategorised.</li>
+  <li>Tabs, counts, Set Category and the pass editor's category picker all follow the list; the pass list sorts by category order, then by name. Starred passes still pin to the top.</li>
+  <li>An <strong>uncategorised</strong> base pass belongs to no category: it shows under <em>All</em> only, so it is never lost and never counted as a member of a category.</li>
+</ul>
+<div class="tip">A vehicle scene comes with Exterior and Interior ready-made and is not modified until you edit the list. Categories are only for base passes — a Variant / Package belongs to its base and is never categorised.</div>
 
 <h2 id="states">Layer States</h2>
 <p>A Layer State is a named snapshot of layer visibility — which layers are on. States can also carry <em>zone entries</em>: per-state material assignments for <a href="#zones">Material Zones</a>. Applying a state therefore switches both the visible geometry and the variant materials in one step.</p>
@@ -177,6 +197,7 @@
   <li>Right-click &gt; <strong>Create New State</strong>, name it, tick the layers that belong to it.</li>
   <li><strong>Double-click</strong> a state to apply it. The active state is highlighted in the list.</li>
   <li>Right-click for Rename / Clone (zones and materials included) / Remove, and for <strong>Viewport / Selection</strong> submenus that replace, add or remove layers from the state based on what is visible or selected.</li>
+  <li><strong>Combine States</strong> bakes several states into one (union of layers, one zone row per zone, conflicts asked). On a vehicle project the merged name is prefilled in SmartBuild's grammar.</li>
   <li><kbd>Insert</kbd> creates a state, <kbd>Delete</kbd> removes the selected ones.</li>
 </ul>
 <figure><a href="images/dlg_editlayers.png" target="_blank"><img src="images/dlg_editlayers.png" alt="Edit State Layers dialog"></a><figcaption>Edit State Layers. While searching, layers you have already selected stay pinned and visible — filtering can never silently drop them.</figcaption></figure>
@@ -184,7 +205,7 @@
 <p>Zone child rows under a state show its material assignments. Click a zone row's <strong>Material</strong> cell to pick from a dropdown of the material library and scene, or right-click for Pick / Copy / Paste / Clear. <strong>Scan Scene for Zones</strong> populates entries automatically from the scene.</p>
 
 <h2 id="zones">Material Zones</h2>
-<p>Material Zones group objects whose material changes together — all painted body panels, all glass, all brightwork. States assign materials <em>per zone</em>, so a new colourway is just a new state with different zone materials.</p>
+<p>Material Zones group objects whose material changes together — all painted panels, all glass, all the label faces on a bottle. States assign materials <em>per zone</em>, so a new colourway is just a new state with different zone materials. A zone is exclusive: an object belongs to one zone, and the zone's material wins.</p>
 <figure><a href="images/main_zones.png" target="_blank"><img src="images/main_zones.png" alt="Material Zones panel"></a><figcaption>Zones with their member objects. The Material column shows each zone's current material at a glance ("(mixed)" when members differ).</figcaption></figure>
 <h3>Creating and managing</h3>
 <ul>
@@ -193,7 +214,7 @@
   <li><strong>Select Zone(s) from Scene</strong> and <strong>Select Object(s) in Scene</strong> bridge between viewport selection and the zone list.</li>
   <li>Zones appear dimmed when none of their objects are on layers visible in the current state.</li>
 </ul>
-<h3>Assigning a material directly <span class="pill">New</span></h3>
+<h3>Assigning a material directly</h3>
 <figure><a href="images/zone_combo.png" target="_blank"><img src="images/zone_combo.png" alt="Zone material dropdown"></a><figcaption>Click a zone's Material cell and pick — the material is assigned to every member object in the scene.</figcaption></figure>
 <ul>
   <li>Click the <strong>Material cell</strong> of a zone row and choose from the dropdown (library materials first, then scene).</li>
@@ -220,23 +241,34 @@
 <p>Animation Sets store keyframed motion (with tangents preserved) for named groups of targets, and are applied per pass via Pass Settings. A pass with an animation set gets its motion applied before rendering; the tool restores original controllers on save so baked animation never leaks into the scene file.</p>
 
 <h2 id="render">Rendering &amp; Submission</h2>
-<h3>Preflight validation <span class="pill">New</span></h3>
+<h3>Preflight validation</h3>
 <p>Before any submission, a <strong>preflight check</strong> resolves everything the farm will need and reports problems in one dialog while you can still fix them — render cameras that no longer exist, zone materials missing from the library and scene, empty or inverted frame ranges, and passes that would write to the same output file. Nothing is sent until you've seen the list. The same details are written to a session log at <code>%temp%\RapidDrive.log</code>, so a half-finished batch is always diagnosable after the fact.</p>
 <h3>Preview &amp; local rendering</h3>
 <p><strong>Render &gt; Preview</strong> applies and renders the selected pass in the viewport renderer at half resolution for a quick look. <strong>Render &gt; Local Machine</strong> renders selected passes in sequence — each pass configuration is applied, then rendered with its own time, size and camera.</p>
 <h3>Deadline</h3>
 <figure><a href="images/dlg_deadline.png" target="_blank"><img src="images/dlg_deadline.png" alt="Deadline submit dialog"></a><figcaption>Deadline submission — output directory can be derived from the scene name automatically.</figcaption></figure>
 <ul>
-  <li><strong>Submit Selected</strong> sends the selected passes; <strong>Submit All</strong> sends every pass in the scene — regardless of any type tab or search filter active in the UI.</li>
+  <li><strong>Submit Selected</strong> sends the selected passes; <strong>Submit All</strong> sends every pass in the scene — regardless of any category tab or search filter active in the UI.</li>
   <li>Disabled and hidden passes, and passes with missing states, are skipped with a summary of exactly what was left out.</li>
-  <li>Each pass is submitted as its own job with a saved scene snapshot. All of the pass's overrides — object properties, animation and the material override — are baked into that snapshot, so the farm renders exactly what the pass defines.</li>
+  <li>Each pass is submitted as its own job with a saved scene snapshot. All of the pass's overrides — object properties, animation and the material override — are baked into that snapshot, so the farm renders exactly what the pass defines. Jobs carry the pass camera, a per-round batch name and a comment naming the tool version that sent them.</li>
   <li>A successful submission stamps each pass with the time it was sent, so you can tell at a glance what has already gone to the farm.</li>
+  <li><strong>Farm fan-out</strong> (Project Settings, opt-in) saves the scene once and lets each node apply its own pass — for very large pass sets.</li>
 </ul>
 <h3>Chaos Cloud</h3>
 <p><strong>Render &gt; Submit to Chaos Cloud…</strong> exports .vrscene files per pass and hands them to the Chaos Cloud client. Configure the client path, output suffix and cache folder in the dialog.</p>
 
+<h2 id="profile">The VCR profile <span class="pill">New in 1.7</span></h2>
+<p>Vehicle work (VCR) has conventions of its own — grade FBX files built with SmartBuild, Exterior and Interior passes, option <em>Packages</em>, state names in SmartBuild's grammar. RapidDrive keeps all of that behind the scene's <strong>profile</strong>, set in <a href="#settings">Project Settings</a>:</p>
+<table>
+<tr><th>Profile</th><th>What it does</th></tr>
+<tr><td><strong>Auto-detect</strong> (default)</td><td>Reads the profile from the scene: base passes typed Exterior / Interior mean VCR; any other passes mean Generic; an empty scene takes your <em>Default for new scenes</em>. Existing vehicle scenes need nothing done.</td></tr>
+<tr><td><strong>VCR (vehicles)</strong></td><td>Build from FBX / Build from Scene in the Passes menu, Exterior and Interior as the starting categories, the Combine States name prefill, and child passes called <strong>Packages</strong>.</td></tr>
+<tr><td><strong>Generic</strong></td><td>No SmartBuild menus, no seeded categories (name your own with Manage…), and child passes called <strong>Variants</strong>.</td></tr>
+</table>
+<p class="note">Package and Variant are the same thing — a label only. Nothing stored in the scene depends on the profile, so a scene can switch either way at any time.</p>
+
 <h2 id="fbx">Build from FBX</h2>
-<p><strong>Passes &gt; Build from FBX…</strong> imports a SmartBuild FBX and generates the whole VCR setup automatically: layers from the hierarchy, then Layer States, Material Zones and Render Passes from the custom attributes carried by the FBX.</p>
+<p><strong>Passes &gt; Build from FBX…</strong> (VCR profile) imports a SmartBuild FBX and generates the whole vehicle setup automatically: layers from the hierarchy, then Layer States, Material Zones and Render Passes from the custom attributes carried by the FBX.</p>
 <table>
 <tr><th>Field</th><th>Required</th><th>Description</th></tr>
 <tr><td>Base Grades</td><td>Yes</td><td>FBX with base model variants (helpers with <code>.grades</code> attributes)</td></tr>
@@ -247,42 +279,58 @@
 <div class="warn">The build starts by resetting the current scene (with a confirmation prompt).</div>
 
 <h2 id="buildscene">Build from Scene</h2>
-<p><strong>Passes &gt; Build from Scene…</strong> rebuilds States, Zones and Passes from custom attributes already present on scene objects — no FBX needed. Useful after manual scene surgery. Existing States and Passes are overwritten (confirmation first).</p>
+<p><strong>Passes &gt; Build from Scene…</strong> (VCR profile) rebuilds States, Zones and Passes from custom attributes already present on scene objects — no FBX needed. Useful after manual scene surgery. Existing States and Passes are overwritten (confirmation first).</p>
+
+<h2 id="migrate">Migrating RPManager scenes <span class="pill">New in 1.7</span></h2>
+<p>Scenes built with the legacy RPManager tool convert into RapidDrive scenes on the farm, one Deadline job per scene, and the original file is never written. The converter writes <code>&lt;scene&gt;_RD.max</code> beside the original together with a report of what converted and what could not.</p>
+<table>
+<tr><th>RPManager</th><th>RapidDrive</th></tr>
+<tr><td>Pass (camera, frames, size, output)</td><td>Base pass, same name</td></tr>
+<tr><td>Layer set / vis set</td><td>Layer state per pass; objects hidden individually get generated <code>RPM_vis_</code> layers</td></tr>
+<tr><td>RPMMaterial per-pass materials</td><td>Material zones with the material per state, exported to a <code>.mat</code> library the Project Settings point at</td></tr>
+<tr><td>Lights on / off per pass</td><td>Follow their layers; generated <code>RPM_lights_</code> layers only when a light does not</td></tr>
+<tr><td>Atmospherics, effects, scripts, extra cameras, per-pass render settings and elements, property overrides</td><td>Reported for a manual decision</td></tr>
+</table>
+<div class="warn">A pass whose stored camera no longer exists in the scene cannot be restored by RPManager and is reported rather than converted.</div>
 
 <h2 id="settings">Project Settings</h2>
 <table>
 <tr><th>Setting</th><th>Description</th></tr>
+<tr><td>Profile</td><td>Auto-detect, VCR (vehicles) or Generic — see <a href="#profile">The VCR profile</a></td></tr>
+<tr><td>Default for new scenes</td><td>Your own default profile for a scene that has no passes yet (per user)</td></tr>
 <tr><td>Material Library</td><td>Path to a <code>.mat</code> file used for material references</td></tr>
 <tr><td>Material Priority</td><td>Whether zone materials prefer the Library or the Scene</td></tr>
+<tr><td>Deadline command dir</td><td>Where <code>deadlinecommand</code> lives (per user)</td></tr>
+<tr><td>Strip hidden layers</td><td>Remove objects on hidden layers from the saved farm scene (smaller files; the default)</td></tr>
 </table>
 
 <h2 id="storage">Data Storage</h2>
 <table>
 <tr><th>Data</th><th>Stored in</th></tr>
-<tr><td>Render Passes, project settings, submission config</td><td><code>rootscene.toyotaVCREditorSettings</code> (XML in the scene file)</td></tr>
+<tr><td>Render Passes, categories, profile, project settings, submission config</td><td><code>rootscene.toyotaVCREditorSettings</code> (XML in the scene file)</td></tr>
 <tr><td>Layer States and zone assignments</td><td><code>rootscene.foeStatesSettings</code> (XML in the scene file)</td></tr>
 <tr><td>Zone membership</td><td>Custom attributes on geometry</td></tr>
 <tr><td>Light rules</td><td>Custom attributes on lights</td></tr>
 <tr><td>External tool paths</td><td><code>(getDir #plugcfg)\Toyota_VCR_Manager.ini</code></td></tr>
 </table>
-<p class="note">Everything travels with the .max file — opening the scene on another machine brings the full VCR setup with it.</p>
+<p class="note">Everything travels with the .max file — opening the scene on another machine brings the full setup with it. The attribute names carry the tool's history (they are not renamed, so every existing scene keeps working).</p>
 
 <h2 id="tips">Tips &amp; Shortcuts</h2>
 <ul>
   <li><strong>Double-click</strong> a pass or state to apply it. Applying is a single <kbd>Ctrl</kbd>+<kbd>Z</kbd> away from undo.</li>
   <li><kbd>Insert</kbd> / <kbd>Delete</kbd> on the Layer States tab create/remove states.</li>
   <li>The <strong>◨ corner button</strong> in the menu bar opens and closes the Scene Manager side.</li>
-  <li>Every panel has an <strong>icon toolbar</strong> mirroring the right-click menu — right-click to dock the toolbars top, bottom or left. <kbd>Ctrl</kbd>+click the pass <em>Apply</em> button to apply package deltas only.</li>
+  <li>Every panel has an <strong>icon toolbar</strong> mirroring the right-click menu — right-click to dock the toolbars top, bottom or left. <kbd>Ctrl</kbd>+click the pass <em>Apply</em> button to apply variant deltas only.</li>
   <li>The <strong>State / Include column</strong> can be hidden from the pass list's right-click menu (Organise) if you prefer a single-column view.</li>
   <li>Window size and position, the open side tab, toolbar placements and column choices are all remembered <strong>per user</strong>.</li>
-  <li>Search boxes filter live and combine with the type tabs; while filtering a picker dialog, your existing selections stay pinned and safe.</li>
+  <li>Search boxes filter live and combine with the category tabs; while filtering a picker dialog, your existing selections stay pinned and safe.</li>
   <li>The zone <strong>Material dropdown</strong> is the fastest way to try a colour across a whole zone — and it's one undo step.</li>
   <li>Hidden rows are included in searches, so you can always find a hidden pass by typing its name.</li>
 </ul>
 
 <footer>
-  RapidDrive — VCR Manager · Created by Ben Robins · Publicis Production<br>
-  Documentation for v1.6 · updated July 2026. Screenshots taken from a working scene &mdash; click any image to view it full size.
+  RapidDrive · Created by Ben Robins · Publicis Production<br>
+  Documentation for v1.7 · updated September 2026. Screenshots taken from a working vehicle scene &mdash; click any image to view it full size.
 </footer>
 </main>
 </div>
