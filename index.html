@@ -51,7 +51,7 @@
 <nav>
   <h4>Start Here</h4>
   <a href="#overview">What is RapidDrive?</a>
-  <a href="#whats-new">What's New in 1.7</a>
+  <a href="#whats-new">What's New</a>
   <a href="#how-it-works">How It Works</a>
   <a href="#getting-started">Getting Started</a>
   <a href="#main-window">The Main Window</a>
@@ -69,6 +69,7 @@
   <a href="#profile">The VCR profile</a>
   <a href="#fbx">Build from FBX</a>
   <a href="#buildscene">Build from Scene</a>
+<a href="#rig">RapidDrive Rig</a>
   <a href="#migrate">Migrating RPManager scenes</a>
   <h4>Reference</h4>
   <a href="#settings">Project Settings</a>
@@ -83,7 +84,20 @@
 <p>It works for any project — a product turntable, a set of packaging shots, a day / night / studio series — and it grew up on vehicle work, where a car ships in dozens of grades, colourways and option packs. Vehicle projects keep everything they rely on behind the <a href="#profile">VCR profile</a>; every other project starts clean and defines its own pass categories.</p>
 <p>It is built around five kinds of reusable building blocks — <a href="#states">Layer States</a>, <a href="#zones">Material Zones</a>, <a href="#lights">Light Rules</a>, <a href="#props">Object Properties</a> and <a href="#anim">Animation Sets</a> — which passes combine like ingredients. Change an ingredient once and every pass that uses it updates.</p>
 
-<h2 id="whats-new">What's New in 1.7</h2>
+<h2 id="whats-new">What's New</h2>
+<h3>1.7.1 &mdash; 27 October 2026 &mdash; The RapidDrive Rig</h3>
+<ul>
+  <li><strong>The RapidDrive Rig is in the menu.</strong> <strong>RapidDrive &gt; RapidDrive Rig</strong> installs a car rig on a vehicle's CAD in one press, drives it along a spline or on a built road, rolls and steers the wheels, moves the suspension, squashes the tyres by their load and carries the shot cameras. See <a href="#rig">RapidDrive Rig</a>.</li>
+  <li><strong>Road presets and hills.</strong> <em>Drive &gt; Preset</em> builds one of seven generic closed roads at real-world scale (Circuit, New York block, LA freeway, LA canyon road, LA coastal highway, LA city boulevard, Off-road loop) with lane markings and a visible road surface; <em>Follow path height</em> makes the car rise, fall and pitch with the road.</li>
+  <li><strong>Rig setups per pass.</strong> Pass Settings gains a <em>Rig setup</em> row per rig, inherited or overridden by option passes and applied by hand or during local, classic Deadline and Chaos Cloud jobs. Deadline fan-out refuses a batch that names a rig setup: use classic Deadline for those passes.</li>
+  <li><strong>Shots become passes.</strong> Each rig camera carries a shot; <em>Make passes</em> writes one base pass per camera into the scene, named <code>&lt;Tag&gt;_&lt;Shot&gt;</code>, with the camera, the frame range and the render size.</li>
+  <li><strong>Multi-camera passes.</strong> A pass may list several cameras (Camera row, <em>More...</em>); every submit path makes one job per camera, and the Deadline dialog lists the jobs it will stage.</li>
+  <li><strong>Layers named <code>RDRig_*</code> or <code>RDAnim_*</code> are protected.</strong> An apply never switches them off and Strip hidden layers never empties them, so a rigged scene renders on the farm with the tool not loaded. Strip hidden layers also keeps the parents of what renders.</li>
+  <li><strong>One look for every tool.</strong> <em>File &gt; Look</em> chooses the theme once for the whole family: 3ds Max look, the Studio theme, and Max's own <em>ame-dark</em> and <em>ame-light</em> schemes; admins get a Theme builder. The RapidDrive menu also opens Layer States, Material Zones, Light Rules, Object Properties and Anim Sets as their own windows, and gains Build from FBX, Build from Scene and Theme Builder.</li>
+  <li><strong>Submit to RapidDriveFarm...</strong> on the RapidDrive menu opens the farm's own 3ds Max submitter.</li>
+  <li><strong>A locked Render Setup view can no longer send the wrong picture to the farm.</strong> With the padlock beside <em>View to Render</em> on, a farm job rendered the locked viewport instead of the pass camera. The lock is released in every farm scene and cloud export.</li>
+</ul>
+<h3>1.7 &mdash; 24 September 2026</h3>
 <ul>
   <li><strong>One tool for every project.</strong> The product is RapidDrive; the "VCR Manager" name is retired. Nothing on disk changed — every existing scene opens exactly as before.</li>
   <li><strong>Pass categories are yours to define.</strong> The Exterior / Interior tabs are now a per-scene list: add, rename, remove and reorder from the <strong>Manage…</strong> chip beside the tabs. Tabs, counts, the Set Category menu and the pass editor follow the list; passes sort by category order. See <a href="#categories">Pass Categories</a>.</li>
@@ -115,7 +129,7 @@
 <h2 id="getting-started">Getting Started</h2>
 <h3>Requirements</h3>
 <ul>
-  <li>3ds Max (tested on 2023). The panel is native Qt (PySide2) — no extra installs.</li>
+  <li>3ds Max 2023 or 2025. The panel is native Qt (PySide2) — no extra installs.</li>
   <li><code>ObjectListView.dll</code> (bundled in <code>libs/</code>) is only needed by the classic window.</li>
 </ul>
 <h3>First-time install</h3>
@@ -192,6 +206,7 @@
 
 <h2 id="states">Layer States</h2>
 <p>A Layer State is a named snapshot of layer visibility — which layers are on. States can also carry <em>zone entries</em>: per-state material assignments for <a href="#zones">Material Zones</a>. Applying a state therefore switches both the visible geometry and the variant materials in one step.</p>
+<p>Applying a state or a render pass switches on the layers it lists and switches off every other layer, with one exception: a layer whose name starts with <code>RDRig_</code> or <code>RDAnim_</code> (any case) is never switched off. These layers hold the RapidDrive Rig and its baked animation chain, which move the car. If the state or pass lists such a layer, it is switched on; if not, it is left as it is. A layer whose name starts with <code>RDRig_</code> and ends with <code>_Preview</code> (the rig's <code>RDRig_&lt;Tag&gt;_Preview</code> layer for optional preview geometry) is not part of this exception: it is switched on and off like any other layer.</p>
 <h3>Creating and managing</h3>
 <ul>
   <li>Right-click &gt; <strong>Create New State</strong>, name it, tick the layers that belong to it.</li>
@@ -293,6 +308,19 @@
 </table>
 <div class="warn">A pass whose stored camera no longer exists in the scene cannot be restored by RPManager and is reported rather than converted.</div>
 
+<h2 id="rig">RapidDrive Rig <span class="pill">New in 1.7.1</span></h2>
+<p>A car rig for 3ds Max 2023 and 2025. It installs on a vehicle's CAD in CAD position, drives the car along a spline or on a built road, keeps the wheels rolling and steering, moves the suspension, squashes the tyres and carries the shot cameras. Open it from <strong>RapidDrive &gt; RapidDrive Rig</strong>. The panel is one dock with five steps; a status card under the step chips reads the rig's state from the scene and says what to do next.</p>
+<ol>
+  <li><strong>Vehicle.</strong> Select any part of the car and press <strong>Rig it</strong>: the rig detects the four wheels, the front end and the drive side, installs at the Install frame and runs its self-check, stopping only when it has a real question. <em>Detect</em> and <em>Install</em> do the same step by step; when detection is wrong, the picks fold names a corner's tyre, spin parts and brakes from the selection, swaps left and right or flips the front. Install changes parent links only and never renames, deletes, re-layers or re-materials a CAD node; <em>Uninstall</em> is the way back. <em>Rig suspension</em> makes the visible linkage move with the wheels; <em>Level on ground</em> and the front and rear ride heights pose the car as it sits on the road.</li>
+  <li><strong>Drive.</strong> Pick a spline, keep the straight path or build a <strong>Preset</strong> road at real-world scale with lane markings. Choose the mode (stationary rolling or on the path), the speed, a ramp or keyed distance, <em>Realistic speed</em> to brake into corners and accelerate out, <em>Follow path height</em> for hills, and <em>Loopable</em> to make the animation join up with itself.</li>
+  <li><strong>Ride.</strong> The road surface (six surfaces and Custom, with a visible road ribbon and obstacles you can place), the vehicle class and body amount, the tyre squash per axle, and the suspension physics in folds.</li>
+  <li><strong>Shots.</strong> Add Physical cameras with the controls of a live automotive shoot; each carries a shot (first frame and length). <strong>Make passes</strong> writes one base pass per camera into the scene, named <code>&lt;Tag&gt;_&lt;Shot&gt;</code>, with the camera, the frame range and the render size; pick its state in the Pass Manager.</li>
+  <li><strong>Deliver.</strong> <em>Publish animation</em> bakes the motion; <em>Prepare vehicle</em>, the Animation stage and <em>Load animation</em> (in folds) carry a vehicle package through a light stage scene into the render scene, where only plain keyed helpers remain, so it renders on the farm with the tool not loaded.</li>
+</ol>
+<p><strong>Rig setups and passes.</strong> A named snapshot of the rig's keys can be chosen per rig in Pass Settings, inherited or overridden by option passes, and is applied for local renders, classic Deadline and Chaos Cloud jobs. Deadline fan-out refuses a batch that names a rig setup: use classic Deadline for those passes. Layers named <code>RDRig_*</code> and <code>RDAnim_*</code> are never switched off by an apply and never emptied by Strip hidden layers.</p>
+<p><strong>Update rig</strong> (Vehicle step) rewrites a rig made by an earlier version of the tool with the current scripts and parameters and keeps every value and key the artist set. Run it once on a rig that predates this release.</p>
+<div class="tip">Limits: one vehicle per rig (several rigs in a scene are independent); Max Clone of a rig is not supported, install again instead; Prepare vehicle, the stage, Publish and Load work in centimetre scenes only; doors and bonnets are animated in the render scene with Animation Sets, not in the stage. The full reference is <code>tools\RapidDriveRig\README.md</code> in the RapidDrive folder.</div>
+
 <h2 id="settings">Project Settings</h2>
 <table>
 <tr><th>Setting</th><th>Description</th></tr>
@@ -301,7 +329,7 @@
 <tr><td>Material Library</td><td>Path to a <code>.mat</code> file used for material references</td></tr>
 <tr><td>Material Priority</td><td>Whether zone materials prefer the Library or the Scene</td></tr>
 <tr><td>Deadline command dir</td><td>Where <code>deadlinecommand</code> lives (per user)</td></tr>
-<tr><td>Strip hidden layers</td><td>Remove objects on hidden layers from the saved farm scene (smaller files; the default)</td></tr>
+<tr><td>Strip hidden layers</td><td>Delete the objects on hidden layers before a farm render: from each saved per-pass scene (classic submit, smaller files) or on the render node after the pass is applied (fan-out). The default. Objects on layers whose names start with <code>RDRig_</code> or <code>RDAnim_</code> are never deleted, except on an <code>RDRig_*_Preview</code> layer, which is stripped like any other layer</td></tr>
 </table>
 
 <h2 id="storage">Data Storage</h2>
