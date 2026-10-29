@@ -63,6 +63,7 @@
   <a href="#lights">Light Rules</a>
   <a href="#props">Object Properties</a>
   <a href="#anim">Animation Sets</a>
+  <a href="#rendersettings">Render Settings</a>
   <h4>Output</h4>
   <a href="#render">Rendering &amp; Submission</a>
   <h4>Vehicle Projects (VCR)</h4>
@@ -85,6 +86,10 @@
 <p>It is built around five kinds of reusable building blocks — <a href="#states">Layer States</a>, <a href="#zones">Material Zones</a>, <a href="#lights">Light Rules</a>, <a href="#props">Object Properties</a> and <a href="#anim">Animation Sets</a> — which passes combine like ingredients. Change an ingredient once and every pass that uses it updates.</p>
 
 <h2 id="whats-new">What's New</h2>
+<h3>Next release</h3>
+<ul>
+  <li><strong>Render Settings per pass.</strong> The Scene Manager gains a <strong>Render Settings</strong> tab: capture the scene's renderer configuration under a name, keep as many as you need (draft, final, stills...), and assign one to each pass; the pass renders with it and the scene's own settings come back for passes without one. See <a href="#rendersettings">Render Settings</a>.</li>
+</ul>
 <h3>1.7.1 &mdash; 27 October 2026 &mdash; The RapidDrive Rig</h3>
 <ul>
   <li><strong>The RapidDrive Rig is in the menu.</strong> <strong>RapidDrive &gt; RapidDrive Rig</strong> installs a car rig on a vehicle's CAD in one press, drives it along a spline or on a built road, rolls and steers the wheels, moves the suspension, squashes the tyres by their load and carries the shot cameras. See <a href="#rig">RapidDrive Rig</a>.</li>
@@ -254,6 +259,17 @@
 <h2 id="anim">Animation Sets</h2>
 <figure><a href="images/main_anim.png" target="_blank"><img src="images/main_anim.png" alt="Animation Sets panel"></a><figcaption>Named animation sets with their target objects.</figcaption></figure>
 <p>Animation Sets store keyframed motion (with tangents preserved) for named groups of targets, and are applied per pass via Pass Settings. A pass with an animation set gets its motion applied before rendering; the tool restores original controllers on save so baked animation never leaks into the scene file.</p>
+
+<h2 id="rendersettings">Render Settings <span class="pill">New</span></h2>
+<p>A Render Setting is a stored copy of the renderer's configuration — every setting of the current renderer (V-Ray's sampler, GI, colour mapping, output options and so on), the Common Parameters options and which render elements are on. Keep one per purpose (a fast draft, the final look, a stills setup, a turntable) and give each pass the one it should render with; the pass's own camera, frame range and resolution stay with the pass.</p>
+<ul>
+  <li><strong>Capture</strong> stores the scene's current render settings under a name. Set up Render Setup the way you want it first, then capture. <strong>Update</strong> re-captures the scene into a stored setting; every pass that names it follows.</li>
+  <li>Each setting lists its captured properties grouped by renderer section. A property whose stored value differs from the scene right now is drawn in the state colour with the scene's value beside it, and the setting row counts the differences — the filter box finds properties by name.</li>
+  <li><strong>Apply</strong> puts a stored setting back into Render Setup (undoable). <strong>Assign</strong> gives it to the passes selected in the Render Passes list; Pass Settings has a <em>Render Settings</em> row and the pass menu an <em>Assign &gt; Set Render Settings...</em> entry. An option pass inherits the base pass's setting unless given its own (or explicitly none).</li>
+  <li>Applying a pass lays its setting on before the material override; applying a pass without one restores the scene's own settings. Saving the scene never bakes a pass's setting into the file; farm copies carry it like every other per-pass override. A pass naming a setting the scene no longer has, or one captured with a different renderer family, is reported at apply time and in preflight.</li>
+  <li><strong>RapidDrive &gt; Render Settings</strong> opens the tool as its own window.</li>
+</ul>
+<div class="warn">A setting captured with V-Ray applies to any V-Ray CPU build (properties the installed build does not know are skipped and counted); it is not applied to V-Ray GPU or another renderer. Properties the pass manager sets itself — the V-Ray render mask, the material override and the raw-output file — are never captured.</div>
 
 <h2 id="render">Rendering &amp; Submission</h2>
 <h3>Preflight validation</h3>
